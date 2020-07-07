@@ -33,7 +33,7 @@ def login(username,password):
 
 
 
-def do_after_login():
+def do_after_login(duration):
     '''
     Find playlist and play all the videos with a secs gap
     '''
@@ -53,13 +53,16 @@ def do_after_login():
 
     time.sleep(4)
     tns_match_playls = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-browse[2]/ytd-two-column-browse-results-renderer/div[1]/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-grid-renderer/div[1]/ytd-grid-playlist-renderer[2]/h3/a')\
-        .click()
+        .click()   # when clicks on the playlist it automatically plays the first video
 
     time.sleep(2)
     all_matches = list(driver.find_elements_by_css_selector('#wc-endpoint'))
+
+    # every video plays for 35 secs
+    time.sleep(duration)
     for video in all_matches[1:]:
         video.click()
-        time.sleep(15)
+        time.sleep(duration)
 
 
 driver = webdriver.Chrome()
@@ -69,5 +72,5 @@ username = 'domautotest@gmail.com'
 password = 'mypasswordisawesome'
 login(username,password)
 
-do_after_login()
+do_after_login(35)
 driver.close()
