@@ -1,0 +1,12 @@
+{
+    "manifest_version": 2,
+    "name": "Wattle Login Auto",
+    "version": "0.1.0",
+    "content_scripts":[
+        {
+            "matches": ["https://www.google.com/"],
+            "js": ["script.js"],
+            "css": ["styles.css"]
+        }
+    ]
+}
