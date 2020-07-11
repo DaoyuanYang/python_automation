@@ -46,17 +46,30 @@ def do_after_login(duration):
     searchbotton = driver.find_element_by_xpath('//*[@id="search-icon-legacy"]')
     searchbotton.click()
 
+    # click the channel after searching
     time.sleep(2)
     channel = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-channel-renderer[1]/div/div[2]/a')\
         .click()
 
+    # switch to all the playlists 
     time.sleep(2)
     playlist = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-browse[2]/div[3]/ytd-c4-tabbed-header-renderer/app-header-layout/div/app-header/div[2]/app-toolbar/div/div/paper-tabs/div/div/paper-tab[3]/div')\
         .click()
 
+    # find playlist 'Tennis Match'
     time.sleep(4)
-    tns_match_playls = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-browse[2]/ytd-two-column-browse-results-renderer/div[1]/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-grid-renderer/div[1]/ytd-grid-playlist-renderer[2]/h3/a')\
-        .click()   # when clicks on the playlist it automatically plays the first video
+    all_playls = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-browse[2]/ytd-two-column-browse-results-renderer/div[1]/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-grid-renderer/div[1]')
+    all_playls = all_playls.find_elements_by_css_selector('#video-title') 
+
+    print([x.get_attribute('title') for x in all_playls])
+    tns_match_playls = 'Tennis Match playlist'
+
+    for pl in all_playls:
+        if pl.get_attribute('title') == 'Tennis Match':
+            tns_match_playls = pl
+            break
+
+    tns_match_playls.click()   # when clicks on the playlist it automatically plays the first video
 
     time.sleep(2)
     all_matches = list(driver.find_elements_by_css_selector('#wc-endpoint'))
@@ -72,20 +85,8 @@ def do_after_login(duration):
             time.sleep(duration)
 
 
-def timeout_to_load():
-    pass
-
-def page_has_loaded():
-    print("Checking if {} page is loaded.".format(driver.current_url))
-    page_state = driver.execute_script('return document.readyState;')
-    print(page_state == 'complete')
-    return page_state == 'complete'
-
-
 driver = webdriver.Chrome()
 driver.get('http://youtube.com')
-
-page_has_loaded()
 
 username = 'domautotest@gmail.com'
 password = 'mypasswordisawesome'
