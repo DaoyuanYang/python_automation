@@ -63,9 +63,13 @@ def do_after_login(duration):
 
     # every video plays for 35 secs
     time.sleep(duration)
-    for video in all_matches[1:]:
-        video.click()
-        time.sleep(duration)
+    counter = 0
+    while True:
+        print(f'Playing in loop number {counter}')
+        counter += 1
+        for video in all_matches[1:]:
+            video.click()
+            time.sleep(duration)
 
 
 def timeout_to_load():
