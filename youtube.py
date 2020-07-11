@@ -12,12 +12,15 @@ def login(username,password):
         .click()
     time.sleep(2)
 
+    # new page, put in email
     email_usnm_input = driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div/div[1]/div/div[1]/input')\
         .send_keys(username)    
     next_usnm_but = driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div/div')\
         .click()
-    time.sleep(2)
 
+    print(driver.current_url)
+    # new page, put in password
+    time.sleep(2)
     password_input = driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input')\
         .send_keys(password)
     next_pw_but = driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div/div')\
@@ -65,12 +68,24 @@ def do_after_login(duration):
         time.sleep(duration)
 
 
+def timeout_to_load():
+    pass
+
+def page_has_loaded():
+    print("Checking if {} page is loaded.".format(driver.current_url))
+    page_state = driver.execute_script('return document.readyState;')
+    print(page_state == 'complete')
+    return page_state == 'complete'
+
+
 driver = webdriver.Chrome()
 driver.get('http://youtube.com')
 
+page_has_loaded()
+
 username = 'domautotest@gmail.com'
 password = 'mypasswordisawesome'
-login(username,password)
+# login(username,password)
 
-do_after_login(35)
+do_after_login(1)
 driver.close()
