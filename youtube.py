@@ -80,7 +80,7 @@ def do_after_login(duration):
     while True:
         print(f'Playing in loop number {counter}')
         counter += 1
-        for video in all_matches[1:]:
+        for video in all_matches:
             video.click()
             time.sleep(duration)
 
