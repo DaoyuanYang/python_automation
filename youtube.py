@@ -75,7 +75,7 @@ def do_after_login(duration):
     all_matches = list(driver.find_elements_by_css_selector('#wc-endpoint'))
 
     # every video plays for 35 secs
-    time.sleep(duration)
+    # time.sleep(duration)
     counter = 0
     while True:
         print(f'Playing in loop number {counter}')
