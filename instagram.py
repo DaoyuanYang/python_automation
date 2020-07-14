@@ -36,7 +36,7 @@ def setup_inst():
 
 def scroll_to_bottom():
     ### scroll to the bottom of the page (infinitely)
-    SCROLL_PAUSE_TIME = 5
+    SCROLL_PAUSE_TIME = 10
 
     # Get scroll height
     last_height = driver.execute_script("return document.body.scrollHeight")
@@ -53,13 +53,12 @@ def scroll_to_bottom():
         if new_height == last_height:
             break
         last_height = new_height
-    print('Scrolled to Bottom')
+    print('Scrolled to Bottom or Scrolling timed out')
 
 
 def like_posts():
+    ### search channel
     time.sleep(3)
-    # account_but = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[3]/div/div[5]/a')\
-    #     .click()
     searchbar = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/div/div')\
         .click()
     searchbar_input = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input')
@@ -78,6 +77,28 @@ def like_posts():
 
     print('Hit enter')
 
+    ### scroll to the bottom
+    scroll_to_bottom()
+
+    ### like posts
+    post_section = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/div[2]/article/div/div')
+    all_posts = post_section.find_elements_by_css_selector('#react-root > section > main > div > div._2z6nI > article > div > div > div > div > a')
+    all_posts = [x.get_attribute('href') for x in all_posts]
+
+    post_count = 0
+    for link in all_posts:
+        print(f'Working on post number {post_count}')
+        driver.get(link)
+        time.sleep(5)
+
+        like_but = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[1]/span[1]/button')
+        like_status = like_but.find_element_by_css_selector('svg').get_attribute('aria-label')
+        if like_status == 'Like':
+            like_but.click()
+            print(f'Post number {post_count} was not liked, performed like')
+        time.sleep(5)
+        post_count += 1
+
 
 driver = webdriver.Chrome()
 driver.get('http://instagram.com')
@@ -85,4 +106,4 @@ driver.get('http://instagram.com')
 login_with_fb()
 setup_inst()
 like_posts()
-
+driver.quit()
