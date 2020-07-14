@@ -7,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 
 def login_with_fb():    
     ### click 'Log in with Facebook' 
-    time.sleep(3)
+    time.sleep(5)
     login_fb = driver.find_element_by_xpath("/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[6]/button").click()
 
 
@@ -19,6 +19,8 @@ def login_with_fb():
         .send_keys('Domey1999$')
     login_button = driver.find_element_by_xpath('/html/body/div[1]/div[3]/div[1]/div/div/div[2]/div[1]/form/div/div[3]/button')\
         .click()
+
+    print('Logged in with Facebook')
 
 
 def setup_inst():
@@ -51,6 +53,7 @@ def scroll_to_bottom():
         if new_height == last_height:
             break
         last_height = new_height
+    print('Scrolled to Bottom')
 
 
 def like_posts():
@@ -59,13 +62,21 @@ def like_posts():
     #     .click()
     searchbar = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/div/div')\
         .click()
-    searchbar_input = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input')\
-        .send_keys('tennis_simplified')
-    time.sleep(5)
-    searchbar_input2 = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input')
-    time.sleep(0.5)
+    searchbar_input = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input')
+    searchbar_input.send_keys('tennis_simplified')
+    
+    count = 0
+    for i in range(5):
+        time.sleep(3)
+        print(f'Pressing ENTER {count}')
+        try:
+            searchbar_input.send_keys(Keys.ENTER)
+        except:
+            print('Stopped pressing ENTER')
+            break
+        count += 1
+
     print('Hit enter')
-    searchbar_input2.send_keys(Keys.ENTER)
 
 
 driver = webdriver.Chrome()
@@ -75,4 +86,3 @@ login_with_fb()
 setup_inst()
 like_posts()
 
-print('Scrolling stopped')
